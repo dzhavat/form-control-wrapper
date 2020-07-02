@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'material-select-test';
+  myControlReactive = new FormControl('');
+  myControlTemplate = '';
+
+  options = [
+    {
+      value: 'option-1',
+      viewValue: 'Option 1'
+    },
+    {
+      value: 'option-2',
+      viewValue: 'Option 2'
+    },
+    {
+      value: 'option-3',
+      viewValue: 'Option 3'
+    }
+  ];
 }
