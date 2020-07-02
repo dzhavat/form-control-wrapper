@@ -9,7 +9,9 @@
   <hr>
 
   <h2>Using Template-driven approach</h2>
-  <app-select-wrapper [(ngModel)]="myControlTemplate" [options]="options"></app-select-wrapper>
+  <app-select-wrapper [(ngModel)]="myControlTemplate" required [options]="options" #templateSelect="ngModel">
+    <p *ngIf="templateSelect.errors && templateSelect.errors.required">This field is required!</p>
+  </app-select-wrapper>
   
   <p>Selected value: {{ myControlTemplate }}</p>
 </div>
