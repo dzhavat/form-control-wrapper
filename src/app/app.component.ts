@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
+function customValidator(control: FormControl) {
+  const isOption2 = control.value === 'option-2';
+  const isValid = !isOption2;
+
+  console.log('isValid', isValid);
+
+  return isValid ? null : { 'option-2 selected': true };
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  myControlReactive = new FormControl('');
+  myControlReactive = new FormControl('', Validators.compose(
+    [Validators.required, customValidator]
+  ));
   myControlTemplate = '';
 
   options = [

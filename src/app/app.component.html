@@ -2,6 +2,9 @@
   <h2>Using Reactive approach</h2>
   <app-select-wrapper [formControl]="myControlReactive" required [options]="options">
     <p *ngIf="myControlReactive.hasError('required')">This field is required!</p>
+    <p *ngIf="myControlReactive.hasError('option-2 selected')">
+      Can't select "option-2".
+    </p>
   </app-select-wrapper>
   
   <p>Selected value: {{ myControlReactive.value }}</p>

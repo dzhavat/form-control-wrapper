@@ -8,4 +8,8 @@
   <mat-error *ngIf="internalControl.hasError('required')">
     <ng-content></ng-content>
   </mat-error>
+
+  <mat-error *ngIf="internalControl.invalid">
+    <ng-content></ng-content>
+  </mat-error>
 </mat-form-field>
