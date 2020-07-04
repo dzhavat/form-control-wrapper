@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-function customValidator(control: FormControl) {
-  const isOption2 = control.value === 'option-2';
-  const isValid = !isOption2;
+function customValidator(option: string): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const isInvalidOption = control.value === option;
 
-  console.log('isValid', isValid);
-
-  return isValid ? null : { 'option-2 selected': true };
+    return isInvalidOption ? { custom: { value: 'This option is not allowed.' }} : null;
+  };
 }
 
 @Component({
@@ -17,7 +16,7 @@ function customValidator(control: FormControl) {
 })
 export class AppComponent {
   myControlReactive = new FormControl('', Validators.compose(
-    [Validators.required, customValidator]
+    [Validators.required, customValidator('option-2')]
   ));
   myControlTemplate = '';
 

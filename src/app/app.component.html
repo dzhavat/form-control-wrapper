@@ -1,11 +1,15 @@
 <div>
   <h2>Using Reactive approach</h2>
-  <app-select-wrapper [formControl]="myControlReactive" required [options]="options">
+  <app-select-wrapper [formControl]="myControlReactive" [options]="options">
     <p *ngIf="myControlReactive.hasError('required')">This field is required!</p>
-    <p *ngIf="myControlReactive.hasError('option-2 selected')">
-      Can't select "option-2".
+    <p *ngIf="myControlReactive.hasError('custom')">
+      {{ myControlReactive.getError("custom").value }}
     </p>
   </app-select-wrapper>
+
+  <p *ngIf="myControlReactive.hasError('custom')">
+    {{ myControlReactive.getError("custom").value }}
+  </p>
   
   <p>Selected value: {{ myControlReactive.value }}</p>
 
