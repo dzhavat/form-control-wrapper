@@ -8,8 +8,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 })
 export class AppComponent {
   form = new FormGroup({
-    myReactiveControl: new FormControl('option-3', [Validators.required]),
-    myReactiveControlTwo: new FormControl('option-2')
+    myReactiveControl: new FormControl('option-3', [Validators.required])
   });
 
   myControlReactive = new FormControl('option-2', [Validators.required]);
