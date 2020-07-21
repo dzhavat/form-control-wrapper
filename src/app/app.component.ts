@@ -1,13 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-
-function customValidator(option: string): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    const isInvalidOption = control.value === option;
-
-    return isInvalidOption ? { custom: { value: 'This option is not allowed.' }} : null;
-  };
-}
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +7,15 @@ function customValidator(option: string): ValidatorFn {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  myControlReactive = new FormControl('', Validators.compose(
-    [Validators.required, customValidator('option-2')]
-  ));
-  myControlTemplate = '';
+  form = new FormGroup({
+    myReactiveControl: new FormControl('option-3', [Validators.required]),
+    myReactiveControlTwo: new FormControl('option-2')
+  });
+
+  myControlReactive = new FormControl('option-2', [Validators.required]);
+
+  myControlTemplate = 'option-2';
+  normalDataBinding = 'option-2';
 
   options = [
     {
@@ -34,4 +31,20 @@ export class AppComponent {
       viewValue: 'Option 3'
     }
   ];
+
+  onSubmit(value) {
+    console.log(value);
+  }
+
+  onDataChange(value) {
+    console.log('data change', value);
+    this.normalDataBinding = value;
+  }
+
+  updateValue(newValue) {
+    this.myControlTemplate = newValue;
+    this.normalDataBinding = newValue;
+    this.myControlReactive.patchValue(newValue);
+    this.form.get('myReactiveControl').patchValue(newValue);
+  }
 }

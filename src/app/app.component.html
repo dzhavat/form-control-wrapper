@@ -1,24 +1,52 @@
-<div>
-  <h2>Using Reactive approach</h2>
-  <app-select-wrapper [formControl]="myControlReactive" [options]="options">
-    <p *ngIf="myControlReactive.hasError('required')">This field is required!</p>
-    <p *ngIf="myControlReactive.hasError('custom')">
-      {{ myControlReactive.getError("custom").value }}
-    </p>
+<h2>Using Reactive approach</h2>
+
+<h3>With FormGroup</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <app-select-wrapper formControlName="myReactiveControl" [options]="options">
   </app-select-wrapper>
 
-  <p *ngIf="myControlReactive.hasError('custom')">
-    {{ myControlReactive.getError("custom").value }}
-  </p>
-  
-  <p>Selected value: {{ myControlReactive.value }}</p>
+  <button type="submit">Submit</button>
+</form>
 
-  <hr>
+<h4>myReactiveControl object</h4>
+<p>Errors: {{ form.get('myReactiveControl').errors | json }}</p>
+<p>Valid: {{ form.get('myReactiveControl').valid }}</p>
 
-  <h2>Using Template-driven approach</h2>
-  <app-select-wrapper [(ngModel)]="myControlTemplate" required [options]="options" #templateSelect="ngModel">
-    <p *ngIf="templateSelect.errors && templateSelect.errors.required">This field is required!</p>
-  </app-select-wrapper>
+<h4>Form</h4>
+<p>Selected value: {{ form.value | json }}</p>
+
+<h3>With FormControl</h3>
+<app-select-wrapper [formControl]="myControlReactive" [options]="options">
+</app-select-wrapper>
+
+<p>Selected value: {{ myControlReactive.value }}</p>
+
+<hr>
+
+<h2>Template-driven</h2>
+
+<app-select-wrapper [(ngModel)]="myControlTemplate" required [options]="options">
+</app-select-wrapper>
   
-  <p>Selected value: {{ myControlTemplate }}</p>
-</div>
+<p>Selected value: {{ myControlTemplate }}</p>
+
+<hr>
+
+<h2>Normal data-binding</h2>
+
+<app-select-wrapper
+  [value]="normalDataBinding"
+  (valueChange)="onDataChange($event)"
+  [options]="options"
+></app-select-wrapper>
+  
+<p>Selected value: {{ normalDataBinding }}</p>
+
+<hr>
+
+<h2>Actions</h2>
+
+<button type="button" (click)="updateValue('option-1')">Option 1</button>
+<button type="button" (click)="updateValue('option-2')">Option 2</button>
+<button type="button" (click)="updateValue('option-3')">Option 3</button>
+<button type="button" (click)="updateValue(undefined)">Undefined</button>

@@ -1,33 +1,30 @@
-import { Component, forwardRef, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, FormControl, Validators } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-select-wrapper',
   templateUrl: './select-wrapper.component.html',
   styleUrls: ['./select-wrapper.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectWrapperComponent),
-      multi: true
-    },
-    {
-      provide: NG_VALIDATORS,
       useExisting: SelectWrapperComponent,
       multi: true
-    }
+    },
   ]
 })
-export class SelectWrapperComponent implements ControlValueAccessor, Validator {
-  internalControl = new FormControl('');
-
+export class SelectWrapperComponent implements ControlValueAccessor {
   @Input() options: any[];
 
+  private internalValue: string | undefined;
+
   @Input()
+  get value() {
+    return this.internalValue;
+  }
   set value(newValue) {
-    this.internalControl.patchValue(newValue);
+    this.internalValue = newValue;
   }
 
   @Output() valueChange = new EventEmitter();
@@ -35,11 +32,10 @@ export class SelectWrapperComponent implements ControlValueAccessor, Validator {
   onChange: any = () => {};
   onTouch: any = () => {};
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  constructor() {}
 
-  writeValue(value: string | undefined): void {
-    this.value = value;
-    this.changeDetectorRef.markForCheck();
+  writeValue(newValue: string | undefined): void {
+    this.value = newValue;
   }
 
   registerOnChange(fn: any): void {
@@ -51,18 +47,9 @@ export class SelectWrapperComponent implements ControlValueAccessor, Validator {
   }
 
   onSelectionChange({ value }: MatSelectChange) {
+    this.value = value;
     this.onChange(value);
-    this.onTouch(value);
+    this.onTouch();
     this.valueChange.emit(value);
-    this.changeDetectorRef.markForCheck();
-  }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    if (control.hasError('required')) {
-      this.internalControl.setValidators(Validators.required);
-      this.internalControl.updateValueAndValidity();
-    }
-
-    return null;
   }
 }
